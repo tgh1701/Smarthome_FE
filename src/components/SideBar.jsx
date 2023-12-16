@@ -43,6 +43,7 @@ const BoxTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const IconTop = styled.div`
@@ -89,6 +90,7 @@ const BoxBot = styled.div`
   font-size: 20px;
   font-weight: 500;
   padding-bottom: 20px;
+  cursor: pointer;
 `;
 
 const SideBar = () => {
@@ -113,21 +115,32 @@ const SideBar = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
   return (
     <Container>
       <SideContainer>
         <Top>
-          <BoxTop>
-            <IconTop>
-              <HomeOutlined
-                style={{
-                  fontWeight: 700,
-                  fontSize: "50px",
-                }}
-              />
-            </IconTop>
-            Smarthome
-          </BoxTop>
+          <Link
+            to="/"
+            style={{ color: "black", textDecoration: "none" }}
+            onClick={() => handleLinkClick("/")}
+          >
+            <BoxTop>
+              <IconTop>
+                <HomeOutlined
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "50px",
+                  }}
+                />
+              </IconTop>
+              Smarthome
+            </BoxTop>
+          </Link>
         </Top>
         <Mid>
           <Link
@@ -191,7 +204,7 @@ const SideBar = () => {
           </Link>
         </Mid>
         <Bot>
-          <BoxBot>
+          <BoxBot onClick={handleLogout}>
             <Icon>
               <LogoutOutlined />
             </Icon>

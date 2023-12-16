@@ -60,7 +60,6 @@ const ChartTemp = () => {
       .get("http://localhost:8000/api/sensorData")
       .then((response) => {
         setSensorData(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching finger data:", error);

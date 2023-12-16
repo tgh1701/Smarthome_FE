@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -37,26 +37,21 @@ const Input = styled.input`
 
 const Button = styled.button`
   width: 40%;
-  border: none;
   padding: 15px 20px;
+  border: none;
+  margin-bottom: 20px;
+  margin-top: 20px;
   background-color: teal;
   color: white;
   cursor: pointer;
-  margin-bottom: 10px;
   &:disabled {
     color: green;
     cursor: not-allowed;
   }
 `;
 
-const Link = styled.a`
-  margin: 5px 0px;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
-
 const Error = styled.span`
+  margin-top: 20px;
   color: red;
 `;
 
@@ -64,6 +59,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   const refreshPage = () => {
@@ -72,7 +68,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://localhost:8000/api/user/login", {
         method: "POST",
@@ -96,6 +91,13 @@ const Login = () => {
     }
   };
 
+  const handleLinkClick = (to) => {
+    if (to === "/signup") {
+      navigate(to);
+      refreshPage();
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -112,7 +114,13 @@ const Login = () => {
           />
           {error && <Error>{error}</Error>}
           <Button type="submit">LOG IN</Button>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Link
+            to="/signup"
+            style={{ color: "black", textDecoration: "none" }}
+            onClick={() => handleLinkClick("/")}
+          >
+            Create a new account!
+          </Link>
         </Form>
       </Wrapper>
     </Container>

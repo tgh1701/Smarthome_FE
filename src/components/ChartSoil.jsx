@@ -60,7 +60,6 @@ const ChartSoil = () => {
       .get("http://localhost:8000/api/sensorData")
       .then((response) => {
         setSoilData(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching finger data:", error);

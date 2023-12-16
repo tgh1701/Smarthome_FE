@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   margin-top: 20px;
+  margin-bottom: 20px;
   width: 40%;
   border: none;
   padding: 15px 20px;
@@ -44,10 +46,22 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const Error = styled.span`
+  margin-top: 20px;
+  color: red;
+`;
+
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const refreshPage = () => {
+    window.location.reload();
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -62,18 +76,27 @@ const Signup = () => {
       const data = await response.json();
       if (response.ok) {
         console.log(data.message);
+        navigate("/login");
+        refreshPage();
       } else {
-        console.error(data.error);
+        setError(data.error);
       }
     } catch (error) {
       console.error("Error during signup:", error);
     }
   };
 
+  const handleLinkClick = (to) => {
+    if (to === "/login") {
+      navigate(to);
+      refreshPage();
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
-        <Title>CREATE AN ACCOUNT</Title>
+        <Title>SIGN UP</Title>
         <Form onSubmit={handleSignup}>
           <Input
             placeholder="Username"
@@ -91,8 +114,16 @@ const Signup = () => {
             value={password}
             type="password"
           />
-          <Button type="submit">CREATE</Button>
+          {error && <Error>{error}</Error>}
+          <Button type="submit">SIGN UP</Button>
         </Form>
+        <Link
+          to="/login"
+          style={{ color: "black", textDecoration: "none" }}
+          onClick={() => handleLinkClick("/")}
+        >
+          Already have account?
+        </Link>
       </Wrapper>
     </Container>
   );

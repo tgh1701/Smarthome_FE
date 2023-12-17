@@ -68,7 +68,7 @@ const SensorsData = () => {
     datasets: [
       {
         label: "MQ2",
-        data: [sensorsData.MQ2 || 0, 100 - sensorsData.MQ2 || 0],
+        data: [sensorsData.MQ2 || 0, 2000 - sensorsData.MQ2 || 0],
         backgroundColor: ["rgb(255, 0, 0)", "rgb(92, 92, 92)"],
         hoverOffset: 4,
         circumference: 180,
@@ -82,7 +82,7 @@ const SensorsData = () => {
     datasets: [
       {
         label: "MQ5",
-        data: [sensorsData.MQ5 || 0, 100 - sensorsData.MQ5 || 0],
+        data: [sensorsData.MQ5 || 0, 2000 - sensorsData.MQ5 || 0],
         backgroundColor: ["rgb(255, 0, 0)", "rgb(92, 92, 92)"],
         hoverOffset: 4,
         circumference: 180,
@@ -221,26 +221,26 @@ const SensorsData = () => {
               padding: 0.01,
               subArcs: [
                 {
-                  limit: 25,
+                  limit: 20,
                   color: "#EA4228",
+                  showMark: true,
+                  tooltip: { text: "Too Dry!" },
+                },
+                {
+                  limit: 40,
+                  color: "#F5CD19",
                   showMark: true,
                   tooltip: { text: "Dry!" },
                 },
                 {
-                  limit: 50,
-                  color: "#F5CD19",
-                  showMark: true,
-                  tooltip: { text: "Comfort!" },
-                },
-                {
-                  limit: 75,
+                  limit: 60,
                   color: "#5BE12C",
                   showMark: true,
-                  tooltip: { text: "Wet" },
+                  tooltip: { text: "Comfort" },
                 },
                 {
                   color: "#49AEFD",
-                  tooltip: { text: "Too Wet" },
+                  tooltip: { text: "Wet" },
                 },
               ],
             }}
@@ -286,26 +286,26 @@ const SensorsData = () => {
               padding: 0.01,
               subArcs: [
                 {
-                  limit: 25,
+                  limit: 10,
                   color: "#EA4228",
+                  showMark: true,
+                  tooltip: { text: "Too Dry!" },
+                },
+                {
+                  limit: 40,
+                  color: "#F5CD19",
                   showMark: true,
                   tooltip: { text: "Dry!" },
                 },
                 {
-                  limit: 50,
-                  color: "#F5CD19",
-                  showMark: true,
-                  tooltip: { text: "Good!" },
-                },
-                {
-                  limit: 75,
+                  limit: 80,
                   color: "#5BE12C",
                   showMark: true,
-                  tooltip: { text: "Wet" },
+                  tooltip: { text: "Good" },
                 },
                 {
                   color: "#49AEFD",
-                  tooltip: { text: "Too Wet" },
+                  tooltip: { text: "Wet" },
                 },
               ],
             }}

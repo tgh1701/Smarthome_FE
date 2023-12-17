@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const Container = styled.div`
   display: flex;
@@ -26,28 +28,6 @@ const Form = styled.form`
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 10px 0px;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  width: 40%;
-  padding: 15px 20px;
-  border: none;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
-  &:disabled {
-    color: green;
-    cursor: not-allowed;
-  }
 `;
 
 const Error = styled.span`
@@ -103,17 +83,40 @@ const Login = () => {
       <Wrapper>
         <Title>LOG IN</Title>
         <Form onSubmit={handleLogin}>
-          <Input
-            placeholder="Username"
+          <TextField
+            id="outlined-basic"
+            label="Username"
+            variant="outlined"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input
-            placeholder="Password"
+          <TextField
+            id="outlined-basic"
+            label="Password"
+            variant="outlined"
             type="password"
+            value={password}
+            sx={{ marginTop: "20px" }}
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && <Error>{error}</Error>}
-          <Button type="submit">LOG IN</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: "grey",
+              fontWeight: "600",
+              width: "40%",
+              height: "40px",
+              padding: "15px 20px",
+              border: "none",
+              marginBottom: "20px",
+              marginTop: "20px",
+            }}
+            type="submit"
+          >
+            LOG IN
+          </Button>
           <Link
             to="/signup"
             style={{ color: "black", textDecoration: "none" }}

@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const Container = styled.div`
   display: flex;
@@ -26,24 +28,6 @@ const Form = styled.form`
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  min-width: 40%;
-  margin: 20px 10px 0px 0px;
-  padding: 10px;
-`;
-
-const Button = styled.button`
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 40%;
-  border: none;
-  padding: 15px 20px;
-  background-color: teal;
-  color: white;
-  cursor: pointer;
 `;
 
 const Error = styled.span`
@@ -98,24 +82,49 @@ const Signup = () => {
       <Wrapper>
         <Title>SIGN UP</Title>
         <Form onSubmit={handleSignup}>
-          <Input
-            placeholder="Username"
+          <TextField
+            id="outlined-basic"
+            label="Username"
+            variant="outlined"
+            sx={{ marginTop: "20px" }}
             onChange={(e) => setUsername(e.target.value)}
             value={username}
           />
-          <Input
-            placeholder="Email"
+          <TextField
+            id="outlined-basic"
+            label="Email"
+            variant="outlined"
+            sx={{ marginTop: "20px" }}
             onChange={(e) => setEmail(e.target.value)}
             value={email}
           />
-          <Input
-            placeholder="Password"
+          <TextField
+            id="outlined-basic"
+            label="Password"
+            variant="outlined"
+            type="password"
+            sx={{ marginTop: "20px" }}
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            type="password"
           />
           {error && <Error>{error}</Error>}
-          <Button type="submit">SIGN UP</Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: "grey",
+              fontWeight: "600",
+              width: "40%",
+              height: "40px",
+              padding: "15px 20px",
+              border: "none",
+              marginBottom: "20px",
+              marginTop: "20px",
+            }}
+            type="submit"
+          >
+            SIGN UP
+          </Button>
         </Form>
         <Link
           to="/login"

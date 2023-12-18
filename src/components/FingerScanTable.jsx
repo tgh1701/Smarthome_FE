@@ -68,7 +68,7 @@ const FingerScanTable = () => {
 
   return (
     <Container>
-      <TitleTable>Fingerprint scanning history</TitleTable>
+      <TitleTable>Scanned fingerprint history</TitleTable>
       <DataGrid
         rows={fingerScanData}
         columns={columns}

@@ -66,20 +66,22 @@ const ChartGas = () => {
       });
   }, []);
 
+  const reversedGasData = gasData.reverse().slice(0, 7);
+
   const convertedData = {
-    labels: gasData
+    labels: reversedGasData
       .map((data) => format(new Date(data.Date), "dd-MM-yyyy"))
       .reverse(),
     datasets: [
       {
         label: "Home",
-        data: gasData.map((data) => data.AvgMQ2),
+        data: reversedGasData.map((data) => data.AvgMQ2).reverse(),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Garage",
-        data: gasData.map((data) => data.AvgMQ5),
+        data: reversedGasData.map((data) => data.AvgMQ5).reverse(),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },

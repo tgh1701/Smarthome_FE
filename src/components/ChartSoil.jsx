@@ -66,14 +66,16 @@ const ChartSoil = () => {
       });
   }, []);
 
+  const reversedSoilData = soilData.reverse().slice(0, 7);
+
   const convertedData = {
-    labels: soilData
+    labels: reversedSoilData
       .map((data) => format(new Date(data.Date), "dd-MM-yyyy"))
       .reverse(),
     datasets: [
       {
         label: "Soil Moisture",
-        data: soilData.map((data) => data.AvgSoil),
+        data: reversedSoilData.map((data) => data.AvgSoil).reverse(),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },

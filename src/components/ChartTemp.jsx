@@ -66,20 +66,22 @@ const ChartTemp = () => {
       });
   }, []);
 
+  const reversedSensorData = sensorData.reverse().slice(0, 7);
+
   const convertedData = {
-    labels: sensorData
+    labels: reversedSensorData
       .map((data) => format(new Date(data.Date), "dd-MM-yyyy"))
       .reverse(),
     datasets: [
       {
         label: "Temperature",
-        data: sensorData.map((data) => data.AvgTemp),
+        data: reversedSensorData.map((data) => data.AvgTemp).reverse(),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
       {
         label: "Humidity",
-        data: sensorData.map((data) => data.AvgHum),
+        data: reversedSensorData.map((data) => data.AvgHum).reverse(),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },

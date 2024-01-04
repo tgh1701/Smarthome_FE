@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import socket from "../socket";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
@@ -368,6 +368,9 @@ const ButtonsControl = () => {
   const [showEnrollForm, setShowEnrollForm] = useState(false);
   const [showPercentageForm, setShowPercentageForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const messageRef = useRef();
+  const recognitionRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -494,6 +497,171 @@ const ButtonsControl = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    const grammar = "#JSGF V1.0;";
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechGrammarList =
+      window.SpeechGrammarList || window.webkitSpeechGrammarList;
+    recognitionRef.current = new SpeechRecognition();
+    const speechRecognitionList = new SpeechGrammarList();
+    speechRecognitionList.addFromString(grammar, 1);
+    recognitionRef.current.grammars = speechRecognitionList;
+    recognitionRef.current.lang = "vi-VN";
+    recognitionRef.current.interimResults = false;
+
+    recognitionRef.current.onresult = function (event) {
+      const lastResult = event.results.length - 1;
+      const content = event.results[lastResult][0].transcript.toLowerCase();
+      messageRef.current.textContent = "Voice Input: " + content;
+      if (
+        content.includes("bật đèn phòng ngủ") ||
+        content.includes("mở đèn phòng ngủ")
+      ) {
+        if (buttonStates["Bedroom"] === 0) {
+          handleButtonClick("Bedroom");
+        }
+      } else if (content.includes("tắt đèn phòng ngủ")) {
+        if (buttonStates["Bedroom"] === 1) {
+          handleButtonClick("Bedroom");
+        }
+      } else if (
+        content.includes("bật quạt phòng ngủ") ||
+        content.includes("mở quạt phòng ngủ")
+      ) {
+        if (buttonStates["Relay2"] === 0) {
+          handleButtonClick("Relay2");
+        }
+      } else if (content.includes("tắt quạt phòng ngủ")) {
+        if (buttonStates["Relay2"] === 1) {
+          handleButtonClick("Relay2");
+        }
+      } else if (
+        content.includes("bật đèn phòng khách") ||
+        content.includes("mở đèn phòng khách")
+      ) {
+        if (buttonStates["Livingroom"] === 0) {
+          handleButtonClick("Livingroom");
+        }
+      } else if (content.includes("tắt đèn phòng khách")) {
+        if (buttonStates["Livingroom"] === 1) {
+          handleButtonClick("Livingroom");
+        }
+      } else if (
+        content.includes("bật quạt phòng khách") ||
+        content.includes("mở quạt phòng khách")
+      ) {
+        if (buttonStates["Relay3"] === 0) {
+          handleButtonClick("Relay3");
+        }
+      } else if (content.includes("tắt quạt phòng khách")) {
+        if (buttonStates["Relay3"] === 1) {
+          handleButtonClick("Relay3");
+        }
+      } else if (
+        content.includes("bật đèn phòng bếp") ||
+        content.includes("mở đèn phòng bếp")
+      ) {
+        if (buttonStates["Kitchen"] === 0) {
+          handleButtonClick("Kitchen");
+        }
+      } else if (content.includes("tắt đèn phòng bếp")) {
+        if (buttonStates["Kitchen"] === 1) {
+          handleButtonClick("Kitchen");
+        }
+      } else if (content.includes("mở cửa")) {
+        if (buttonStates["Door"] === 0) {
+          handleButtonClick("Door");
+        }
+      } else if (content.includes("đóng cửa")) {
+        if (buttonStates["Door"] === 1) {
+          handleButtonClick("Door");
+        }
+      } else if (
+        content.includes("bật tất cả các đèn") ||
+        content.includes("mở tất cả các đèn")
+      ) {
+        if (buttonStates["Bedroom"] === 0) {
+          handleButtonClick("Bedroom");
+        }
+        if (buttonStates["Livingroom"] === 0) {
+          handleButtonClick("Livingroom");
+        }
+        if (buttonStates["Kitchen"] === 0) {
+          handleButtonClick("Kitchen");
+        }
+      } else if (content.includes("tắt tất cả các đèn")) {
+        if (buttonStates["Bedroom"] === 1) {
+          handleButtonClick("Bedroom");
+        }
+        if (buttonStates["Livingroom"] === 1) {
+          handleButtonClick("Livingroom");
+        }
+        if (buttonStates["Kitchen"] === 1) {
+          handleButtonClick("Kitchen");
+        }
+      } else if (
+        content.includes("bật tất cả các quạt") ||
+        content.includes("mở tất cả các quạt")
+      ) {
+        if (buttonStates["Relay2"] === 0) {
+          handleButtonClick("Relay2");
+        }
+        if (buttonStates["Relay3"] === 0) {
+          handleButtonClick("Relay3");
+        }
+      } else if (content.includes("tắt tất cả các quạt")) {
+        if (buttonStates["Relay2"] === 1) {
+          handleButtonClick("Relay2");
+        }
+        if (buttonStates["Relay3"] === 1) {
+          handleButtonClick("Relay3");
+        }
+      } else if (
+        content.includes("bật máy bơm") ||
+        content.includes("mở máy bơm")
+      ) {
+        if (buttonStates["Relay1"] === 0) {
+          handleButtonClick("Relay1");
+        }
+      } else if (content.includes("tắt máy bơm")) {
+        if (buttonStates["Relay1"] === 1) {
+          handleButtonClick("Relay1");
+        }
+      } else if (
+        content.includes("bật giàn phơi") ||
+        content.includes("mở giàn phơi")
+      ) {
+        if (buttonStates["ServoRain"] === 0) {
+          handleButtonClick("ServoRain");
+        }
+      } else if (
+        content.includes("tắt giàn phơi") ||
+        content.includes("đóng giàn phơi")
+      ) {
+        if (buttonStates["ServoRain"] === 1) {
+          handleButtonClick("ServoRain");
+        }
+      }
+    };
+
+    recognitionRef.current.onspeechend = function () {
+      setIsListening(false);
+      recognitionRef.current.stop();
+    };
+
+    return () => {
+      recognitionRef.current.abort();
+    };
+  }, [buttonStates]);
+
+  const startRecognition = () => {
+    if (!isListening) {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
   };
 
   return isConnected ? (
@@ -866,6 +1034,13 @@ const ButtonsControl = () => {
             </div>
           </div>
         </Modal>
+      </div>
+      <div>
+        <h1>Speech Recognition</h1>
+        <p id="message" ref={messageRef}></p>
+        <button id="btnTalk" onClick={startRecognition} disabled={isListening}>
+          {isListening ? "Listening..." : "Start"}
+        </button>
       </div>
     </Container>
   ) : null;

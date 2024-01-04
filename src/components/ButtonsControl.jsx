@@ -368,8 +368,8 @@ const ButtonsControl = () => {
   const [showEnrollForm, setShowEnrollForm] = useState(false);
   const [showPercentageForm, setShowPercentageForm] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const messageRef = useRef();
-  const recognitionRef = useRef(null);
+  const [messageContent, setMessageContent] = useState("");
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
   const [isListening, setIsListening] = useState(false);
 
   useEffect(() => {
@@ -505,17 +505,17 @@ const ButtonsControl = () => {
       window.SpeechRecognition || window.webkitSpeechRecognition;
     const SpeechGrammarList =
       window.SpeechGrammarList || window.webkitSpeechGrammarList;
-    recognitionRef.current = new SpeechRecognition();
+    const recognition = new SpeechRecognition();
     const speechRecognitionList = new SpeechGrammarList();
     speechRecognitionList.addFromString(grammar, 1);
-    recognitionRef.current.grammars = speechRecognitionList;
-    recognitionRef.current.lang = "vi-VN";
-    recognitionRef.current.interimResults = false;
+    recognition.grammars = speechRecognitionList;
+    recognition.lang = "vi-VN";
+    recognition.interimResults = false;
 
-    recognitionRef.current.onresult = function (event) {
+    recognition.onresult = function (event) {
       const lastResult = event.results.length - 1;
       const content = event.results[lastResult][0].transcript.toLowerCase();
-      messageRef.current.textContent = "Voice Input: " + content;
+      setMessageContent("Voice Input: " + content);
       if (
         content.includes("bật đèn phòng ngủ") ||
         content.includes("mở đèn phòng ngủ")
@@ -647,20 +647,23 @@ const ButtonsControl = () => {
       }
     };
 
-    recognitionRef.current.onspeechend = function () {
+    recognition.onspeechend = function () {
       setIsListening(false);
-      recognitionRef.current.stop();
+      recognition.stop();
     };
 
-    return () => {
-      recognitionRef.current.abort();
+    recognition.onerror = function (event) {
+      setIsListening(false);
+      setMessageContent("Error: " + event.error);
     };
+
+    setRecognitionInstance(recognition);
   }, [buttonStates]);
 
   const startRecognition = () => {
     if (!isListening) {
       setIsListening(true);
-      recognitionRef.current.start();
+      recognitionInstance.start();
     }
   };
 

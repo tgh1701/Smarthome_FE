@@ -1040,7 +1040,7 @@ const ButtonsControl = () => {
       </div>
       <div>
         <h1>Speech Recognition</h1>
-        <p id="message" ref={messageRef}></p>
+        <p id="message">{messageContent}</p>
         <button id="btnTalk" onClick={startRecognition} disabled={isListening}>
           {isListening ? "Listening..." : "Start"}
         </button>

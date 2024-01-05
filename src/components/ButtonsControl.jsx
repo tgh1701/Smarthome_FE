@@ -343,7 +343,6 @@ const Voice = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   borderRadius: "10px",
-  width: " 330px",
   width: "330px",
 }));
 

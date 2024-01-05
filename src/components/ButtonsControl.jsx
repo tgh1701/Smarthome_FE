@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import socket from "../socket";
 import axios from "axios";
 import { styled } from "@mui/material/styles";
@@ -17,6 +17,8 @@ import YardOutlinedIcon from "@mui/icons-material/YardOutlined";
 import FingerprintOutlinedIcon from "@mui/icons-material/FingerprintOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
+import KeyboardVoiceOutlinedIcon from "@mui/icons-material/KeyboardVoiceOutlined";
+import SettingsVoiceOutlinedIcon from "@mui/icons-material/SettingsVoiceOutlined";
 import lightOnSvg from "../icon/light_on.svg";
 import lightOffSvg from "../icon/light_off.svg";
 import fanOnSvg from "../icon/fan_on.svg";
@@ -332,6 +334,36 @@ const Kitchen = styled(Box)(({ theme }) => ({
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
   borderRadius: "10px",
   width: " 330px",
+  marginBottom: "40px",
+}));
+
+const Voice = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "white",
+  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+  borderRadius: "10px",
+  width: " 330px",
+  width: "330px",
+}));
+
+const VoiceCon = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  margin: "10px",
+}));
+
+const MessageCon = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+}));
+
+const Message = styled(Box)(({ theme }) => ({
+  fontSize: "1.5rem",
 }));
 
 const Balcony = styled(Box)(({ theme }) => ({
@@ -371,6 +403,7 @@ const ButtonsControl = () => {
   const [messageContent, setMessageContent] = useState("");
   const [recognitionInstance, setRecognitionInstance] = useState(null);
   const [isListening, setIsListening] = useState(false);
+  const [showMessage, setShowMessage] = useState(true);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -515,7 +548,11 @@ const ButtonsControl = () => {
     recognition.onresult = function (event) {
       const lastResult = event.results.length - 1;
       const content = event.results[lastResult][0].transcript.toLowerCase();
-      setMessageContent("Voice Input: " + content);
+      setMessageContent(content);
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
       if (
         content.includes("bật đèn phòng ngủ") ||
         content.includes("mở đèn phòng ngủ")
@@ -864,6 +901,32 @@ const ButtonsControl = () => {
               onClick={() => handleButtonClick("Kitchen")}
             />
           </Kitchen>
+          <Voice>
+            <VoiceCon>
+              <Button
+                onClick={startRecognition}
+                disabled={isListening}
+                sx={{
+                  backgroundColor: "grey",
+                  height: "30px",
+                  width: "100px",
+                  fontWeight: "600",
+                }}
+                variant="contained"
+              >
+                {isListening ? (
+                  <SettingsVoiceOutlinedIcon />
+                ) : (
+                  <KeyboardVoiceOutlinedIcon />
+                )}
+              </Button>
+            </VoiceCon>
+            <MessageCon>
+              <Message style={{ display: showMessage ? "block" : "none" }}>
+                {messageContent}
+              </Message>
+            </MessageCon>
+          </Voice>
         </MidContainer>
         <RightContainer>
           <Balcony
@@ -1037,13 +1100,6 @@ const ButtonsControl = () => {
             </div>
           </div>
         </Modal>
-      </div>
-      <div>
-        <h1>Speech Recognition</h1>
-        <p id="message">{messageContent}</p>
-        <button id="btnTalk" onClick={startRecognition} disabled={isListening}>
-          {isListening ? "Listening..." : "Start"}
-        </button>
       </div>
     </Container>
   ) : null;
